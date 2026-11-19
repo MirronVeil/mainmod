@@ -1,0 +1,14 @@
+{
+  "name": "minemods-node",
+  "version": "1.0.0",
+  "description": "MineMods - каталог модов для Minecraft (Node.js + Express + PostgreSQL)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pg": "^8.11.5"
+  }
+}

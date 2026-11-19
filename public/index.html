@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MineMods — Каталог модов Minecraft</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="cube"></span>
+        <span>MineMods</span>
+      </div>
+      <div class="top-actions">
+        <button class="btn ghost" onclick="openUserModal()">+ Новый автор</button>
+        <button class="btn primary" onclick="openModModal()">+ Добавить мод</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Каталог модов для Minecraft</h1>
+      <p>Управление модами, авторами и лайками с сохранением в PostgreSQL</p>
+    </section>
+
+    <section class="filters">
+      <input type="text" id="searchInput" placeholder="Поиск по названию или описанию..." oninput="loadMods()">
+      <select id="categoryFilter" onchange="loadMods()">
+        <option value="">Все категории</option>
+        <option value="Оптимизация">Оптимизация</option>
+        <option value="Технологии">Технологии</option>
+        <option value="Мир и биомы">Мир и биомы</option>
+        <option value="Утилиты">Утилиты</option>
+        <option value="Приключения">Приключения</option>
+        <option value="Графика">Графика</option>
+      </select>
+      <select id="loaderFilter" onchange="loadMods()">
+        <option value="">Все загрузчики</option>
+        <option value="Fabric">Fabric</option>
+        <option value="Forge">Forge</option>
+        <option value="NeoForge">NeoForge</option>
+      </select>
+      <select id="sortFilter" onchange="loadMods()">
+        <option value="new">Сначала новые</option>
+        <option value="downloads">По скачиваниям</option>
+        <option value="likes">По лайкам</option>
+        <option value="title">По алфавиту</option>
+      </select>
+    </section>
+
+    <section id="modsGrid" class="grid"></section>
+  </main>
+
+  <!-- Модальное окно создания / редактирования мода -->
+  <div id="modModal" class="modal hidden">
+    <div class="modal-card">
+      <h2 id="modalTitle">Добавить мод</h2>
+      <form id="modForm" onsubmit="saveMod(event)">
+        <input type="hidden" id="modId">
+        <label>Название мода
+          <input type="text" id="title" required placeholder="Например: OptiFine HD">
+        </label>
+        <label>Описание
+          <textarea id="description" rows="3" required placeholder="Краткое описание возможностей мода..."></textarea>
+        </label>
+        <div class="row3">
+          <label>Категория
+            <select id="category" required>
+              <option value="Оптимизация">Оптимизация</option>
+              <option value="Технологии">Технологии</option>
+              <option value="Мир и биомы">Мир и биомы</option>
+              <option value="Утилиты">Утилиты</option>
+              <option value="Приключения">Приключения</option>
+              <option value="Графика">Графика</option>
+            </select>
+          </label>
+          <label>Версия MC
+            <select id="mc_version" required>
+              <option value="1.21.1">1.21.1</option>
+              <option value="1.20.4">1.20.4</option>
+              <option value="1.20.1">1.20.1</option>
+              <option value="1.19.2">1.19.2</option>
+            </select>
+          </label>
+          <label>Загрузчик
+            <select id="loader" required>
+              <option value="Fabric">Fabric</option>
+              <option value="Forge">Forge</option>
+              <option value="NeoForge">NeoForge</option>
+            </select>
+          </label>
+        </div>
+        <label id="authorLabel">Автор (из таблицы users)
+          <select id="author_id" required></select>
+        </label>
+        <label>Ссылка на скачивание
+          <input type="url" id="download_url" required placeholder="https://modrinth.com/mod/...">
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn ghost" onclick="closeModModal()">Отмена</button>
+          <button type="submit" class="btn primary">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Модальное окно добавления пользователя -->
+  <div id="userModal" class="modal hidden">
+    <div class="modal-card">
+      <h2>Новый автор (таблица users)</h2>
+      <form onsubmit="saveUser(event)">
+        <label>Никнейм
+          <input type="text" id="username" required placeholder="Например: NotchDev">
+        </label>
+        <label>Email
+          <input type="email" id="email" required placeholder="notch@minecraft.net">
+        </label>
+        <label>Пароль
+          <input type="password" id="password" required placeholder="12345">
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn ghost" onclick="closeUserModal()">Отмена</button>
+          <button type="submit" class="btn primary">Создать</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
